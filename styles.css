@@ -36,63 +36,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 0;
-}
-
-.web {
-  flex: 1;
-  align-self: stretch;
-  width: 100%;
-  min-height: 0;
-  display: block;
-  overflow: visible;
-}
-
-.web .edge {
-  fill: none;
-  stroke: #161616;
-  stroke-width: 1;
-  opacity: 0.22;
-  transition: opacity 0.25s ease;
-}
-
-.web .edge.kind-theme {
-  stroke-dasharray: 3.5 5;
-}
-
-.web .edge.kind-causal {
-  opacity: 0.35;
-}
-
-.web .node .hit {
-  fill: transparent;
-}
-
-.web .node .dot {
-  fill: #161616;
-}
-
-.web .node text {
-  font-family: Manrope, sans-serif;
-  font-size: 15px;
-  fill: #161616;
-  opacity: 0.78;
-  pointer-events: none;
-}
-
-.web .node.hub text {
-  font-size: 16px;
-  opacity: 0.9;
-}
-
-.web.is-hover .edge,
-.web.is-hover .node {
-  opacity: 0.16;
-}
-
-.web.is-hover .edge.is-on,
-.web.is-hover .node.is-on {
-  opacity: 1;
 }
 
 .intro {
