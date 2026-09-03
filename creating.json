@@ -1,0 +1,9 @@
+{
+  "nodes": [
+    { "id": "technical", "label": "Technical", "hub": true, "cluster": "technical" },
+    { "id": "non-technical", "label": "Non-technical", "hub": true, "cluster": "non-technical" }
+  ],
+  "edges": [
+    { "from": "technical", "to": "non-technical", "kind": "bridge" }
+  ]
+}

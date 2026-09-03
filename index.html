@@ -1,30 +1,92 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>엄마 아빠 안녕 -주연이의 웹사이트야 ㅋㅋㅋㅋㅋ</title>
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-    font-size: 42px;
-    font-weight: 700;
-    color: #111;
-    background: #fff;
-    text-align: center;
-    padding: 24px;
-  }
-</style>
+<title>juyeon</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  엄마 아빠 안녕 -주연이의 웹사이트야
+  <nav class="tabs">
+    <a href="index.html" class="on">juyeon</a>
+    <a href="creating.html">creating</a>
+    <a href="consuming.html">consuming</a>
+  </nav>
+
+  <div class="stage">
+    <main class="intro">
+      <div class="copy">
+        <div id="bio"></div>
+        <ol class="footnotes" id="notes"></ol>
+      </div>
+      <img class="photo" src="images/juyeon.jpg" alt="Juyeon">
+    </main>
+  </div>
+
+<script>
+  function external(a) {
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+  }
+
+  function fillInline(el, text, notes) {
+    var parts = text.split(/(\[[^\]]+\]\([^)]+\)|\[\d+\])/);
+    parts.forEach(function (part) {
+      var link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      var fn = part.match(/^\[(\d+)\]$/);
+      if (link) {
+        var a = document.createElement("a");
+        a.href = link[2];
+        a.textContent = link[1];
+        external(a);
+        if (/oxformals/i.test(link[1] + link[2])) {
+          a.className = "ox";
+          a.setAttribute("data-word", link[1]);
+        }
+        el.appendChild(a);
+      } else if (fn) {
+        var sup = document.createElement("sup");
+        var a = document.createElement("a");
+        a.href = "#fn-" + fn[1];
+        a.textContent = "[" + fn[1] + "]";
+        sup.appendChild(a);
+        el.appendChild(sup);
+      } else if (part) {
+        el.appendChild(document.createTextNode(part));
+      }
+    });
+  }
+
+  fetch("bio.md")
+    .then(function (res) { return res.text(); })
+    .then(function (raw) {
+      var notes = {};
+      var body = raw.replace(/^\[(\d+)\]:\s+(\S+)(?:\s+"(.*)")?\s*$/gm, function (_, n, url, title) {
+        notes[n] = { url: url, title: title || url };
+        return "";
+      });
+
+      var bio = document.getElementById("bio");
+      body.trim().split(/\n\s*\n/).forEach(function (block) {
+        if (!block.trim()) return;
+        var p = document.createElement("p");
+        fillInline(p, block.replace(/\s*\n\s*/g, " ").trim(), notes);
+        bio.appendChild(p);
+      });
+
+      var list = document.getElementById("notes");
+      Object.keys(notes).sort(function (a, b) { return Number(a) - Number(b); }).forEach(function (n) {
+        var li = document.createElement("li");
+        li.id = "fn-" + n;
+        li.appendChild(document.createTextNode("[" + n + "] "));
+        var a = document.createElement("a");
+        a.href = notes[n].url;
+        a.textContent = notes[n].title;
+        external(a);
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+    });
+</script>
 </body>
 </html>
